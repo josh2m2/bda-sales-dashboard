@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BDA Sales Dashboard — July 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: #f4f4f2;
+      color: #111;
+      min-height: 100vh;
+      padding: 36px 20px 60px;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      margin-bottom: 28px;
+    }
+    .header .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.2;
+    }
+    .header .sub {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    /* ── TOGGLE ── */
+    .toggle-bar {
+      display: inline-flex;
+      gap: 3px;
+      background: #e5e7eb;
+      padding: 3px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .toggle-btn {
+      padding: 7px 18px;
+      border: none;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: #6b7280;
+      transition: all 0.14s ease;
+      letter-spacing: 0.01em;
+    }
+    .toggle-btn.active {
+      background: #fff;
+      color: #111;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .dot-scorecard { background: #6366f1; }
+
+    /* ── TABLE CARD ── */
+    .table-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    /* Column header row */
+    .col-head {
+      display: grid;
+      grid-template-columns: 1fr 110px 110px;
+      padding: 11px 18px;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .col-head span {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+    .col-head span:not(:first-child) { text-align: right; }
+
+    /* Section header */
+    .section-hd {
+      padding: 8px 18px 7px;
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .section-hd span {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    /* Metric row */
+    .mrow {
+      display: grid;
+      grid-template-columns: 1fr 110px 110px;
+      padding: 9px 18px;
+      border-bottom: 1px solid #f3f4f6;
+      align-items: center;
+    }
+    .mrow:last-child { border-bottom: none; }
+    .mrow:hover { background: #fafafa; }
+
+    .mlabel {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: #374151;
+    }
+    .mval {
+      text-align: right;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #6b7280;
+      font-variant-numeric: tabular-nums;
+    }
+    .mval.mtd {
+      font-weight: 600;
+      color: #111;
+    }
+    .mval.up   { color: #059669; }
+    .mval.down { color: #dc2626; }
+    .mval.flat { color: #6b7280; }
+    .mval.na   { color: #d1d5db; }
+
+    /* Sub-divider inside a section */
+    .subdiv {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 2px 18px;
+    }
+
+    /* Footer note */
+    .fnote {
+      font-size: 11px;
+      color: #9ca3af;
+      padding: 10px 18px 12px;
+      border-top: 1px solid #f3f4f6;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <p class="eyebrow">Budget Dog · LTA Funnel</p>
+    <h1>Sales Team Dashboard</h1>
+    <p class="sub">July 2026 MTD &nbsp;·&nbsp; Source: Scorecard</p>
+  </div>
+
+  <div class="toggle-bar">
+    <button class="toggle-btn active" data-view="f2f">F2F</button>
+    <button class="toggle-btn"        data-view="6ff">6FF</button>
+    <button class="toggle-btn"        data-view="combined">Combined</button>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="dot dot-scorecard"></span> Scorecard
+    </div>
+    <div class="legend-item" style="color:#059669;">▲ above 6MA</div>
+    <div class="legend-item" style="color:#dc2626;">▼ below 6MA</div>
+  </div>
+
+  <div class="table-card">
+    <div class="col-head">
+      <span>Metric</span>
+      <span id="ma-label">6MA</span>
+      <span>MTD</span>
+    </div>
+
+    <div class="section-hd"><span>Front End</span></div>
+    <div id="rows-fe"></div>
+
+    <div class="section-hd"><span>Middle — Setter Layer</span></div>
+    <div id="rows-mid"></div>
+
+    <div class="section-hd"><span>Backend — Closer Layer</span></div>
+    <div id="rows-be"></div>
+
+    <p class="fnote" id="footnote"></p>
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA  (6MA = trailing 6-month average before MTD month)
+// up  = higher MTD is better
+// down = lower MTD is better
+// flat = directional signal not meaningful (ad spend, spend-driven counts)
+// na   = data not yet wired (placeholders)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const VIEWS = {
+
+  f2f: {
+    maLabel: 'Jan–Jun avg',
+    note: 'F2F 6MA = simple average of Jan–Jun 2026 (6 complete months).',
+    fe: [
+      { label: 'Ad spend',             ma: '$36,473', mtd: '$63,427', dir: 'flat' },
+      { label: 'Sales page (visitors)',  ma: '14,124',  mtd: '20,044',  dir: 'up'   },
+      { label: 'Opt-in rate',           ma: '5.6%',    mtd: '6.6%',    dir: 'up'   },
+      { label: 'Checkout rate',         ma: '31.5%',   mtd: '42%',     dir: 'up'   },
+      { label: 'LT buyers',             ma: '276',     mtd: '550',     dir: 'up'   },
+      { label: 'LT cash',               ma: '$8,720',  mtd: '$19,197', dir: 'up'   },
+      { label: 'LT calls booked %',     ma: '70.3%',   mtd: '70%',     dir: 'flat' },
+      { label: 'LT calls booked',       ma: '219',     mtd: '387',     dir: 'up'   },
+    ],
+    mid: [
+      { label: 'Show rate',             ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'No-show rate',          ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Cancellation rate',     ma: '—',       mtd: '—',       dir: 'na'   },
+      { divider: true },
+      { label: 'Qualified %',           ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Booked-to-close rate',  ma: '—',       mtd: '—',       dir: 'na'   },
+    ],
+    be: [
+      { label: 'Show rate',             ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'No-show rate',          ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Cancellation rate',     ma: '—',       mtd: '—',       dir: 'na'   },
+      { divider: true },
+      { label: 'Closes',                ma: '18',      mtd: '11',      dir: 'up'   },
+      { label: 'Close rate',            ma: '13.7%',   mtd: '13%',     dir: 'flat' },
+      { label: 'Total cash collected',  ma: '$131,850',mtd: '$100,147',dir: 'up'   },
+    ],
+  },
+
+  '6ff': {
+    maLabel: 'Jan–Jun avg*',
+    note: '* 6FF 6MA uses Jan / Feb / Mar / Jun only — Apr & May data not in scorecard.',
+    fe: [
+      { label: 'Ad spend',              ma: '$29,133', mtd: '$20,457', dir: 'flat' },
+      { label: 'Sales page (visitors)', ma: '10,255',  mtd: '9,107',   dir: 'up'   },
+      { label: 'Opt-in rate',           ma: '8.1%',    mtd: '8.1%',    dir: 'flat' },
+      { label: 'Checkout rate',         ma: '34%',     mtd: '35%',     dir: 'up'   },
+      { label: 'LT buyers',             ma: '290',     mtd: '257',     dir: 'up'   },
+      { label: 'LT cash',               ma: '$12,220', mtd: '$8,584',  dir: 'up'   },
+      { label: 'LT calls booked %',     ma: '45%',     mtd: '56%',     dir: 'up'   },
+      { label: 'LT calls booked',       ma: '125',     mtd: '144',     dir: 'up'   },
+    ],
+    mid: [
+      { label: 'Show rate',             ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'No-show rate',          ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Cancellation rate',     ma: '—',       mtd: '—',       dir: 'na'   },
+      { divider: true },
+      { label: 'Qualified %',           ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Booked-to-close rate',  ma: '—',       mtd: '—',       dir: 'na'   },
+    ],
+    be: [
+      { label: 'Show rate',             ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'No-show rate',          ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Cancellation rate',     ma: '—',       mtd: '—',       dir: 'na'   },
+      { divider: true },
+      { label: 'Closes',                ma: '10',      mtd: '3',       dir: 'up'   },
+      { label: 'Close rate',            ma: '18.8%',   mtd: '14%',     dir: 'up'   },
+      { label: 'Total cash collected',  ma: '$86,951', mtd: '$33,584', dir: 'up'   },
+    ],
+  },
+
+  combined: {
+    maLabel: 'Jan–Jun avg*',
+    note: '* Combined 6MA uses Jan / Feb / Mar / Jun only — 6FF data unavailable for Apr & May.',
+    fe: [
+      { label: 'Ad spend',              ma: '$78,779', mtd: '$83,884', dir: 'flat' },
+      { label: 'Sales page (visitors)', ma: '28,289',  mtd: '29,151',  dir: 'up'   },
+      { label: 'Opt-in rate',           ma: '6.4%',    mtd: '7.0%',    dir: 'up'   },
+      { label: 'Checkout rate',         ma: '35%',     mtd: '39%',     dir: 'up'   },
+      { label: 'LT buyers',             ma: '659',     mtd: '807',     dir: 'up'   },
+      { label: 'LT cash',               ma: '$23,672', mtd: '$27,781', dir: 'up'   },
+      { label: 'LT calls booked %',     ma: '64%',     mtd: '66%',     dir: 'up'   },
+      { label: 'LT calls booked',       ma: '431',     mtd: '531',     dir: 'up'   },
+    ],
+    mid: [
+      { label: 'Show rate',             ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'No-show rate',          ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Cancellation rate',     ma: '—',       mtd: '—',       dir: 'na'   },
+      { divider: true },
+      { label: 'Qualified %',           ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Booked-to-close rate',  ma: '—',       mtd: '—',       dir: 'na'   },
+    ],
+    be: [
+      { label: 'Show rate',             ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'No-show rate',          ma: '—',       mtd: '—',       dir: 'na'   },
+      { label: 'Cancellation rate',     ma: '—',       mtd: '—',       dir: 'na'   },
+      { divider: true },
+      { label: 'Closes',                ma: '35',      mtd: '14',      dir: 'up'   },
+      { label: 'Close rate',            ma: '15.9%',   mtd: '13%',     dir: 'up'   },
+      { label: 'Total cash collected',  ma: '$274,699',mtd: '$133,731',dir: 'up'   },
+    ],
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderSection(id, rows) {
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+
+  rows.forEach(row => {
+    if (row.divider) {
+      const d = document.createElement('div');
+      d.className = 'subdiv';
+      el.appendChild(d);
+      return;
+    }
+
+    const isUp   = row.dir === 'up'   && row.mtd !== '—';
+    const isDown = row.dir === 'up'   && row.mtd === '—' ? false : false; // guard
+    const mtdBetter = row.dir === 'up'   && compareBetter(row.mtd, row.ma) === 1;
+    const mtdWorse  = row.dir === 'up'   && compareBetter(row.mtd, row.ma) === -1;
+    const mtdClass  = row.dir === 'na'   ? 'na'
+                    : row.dir === 'flat' ? 'mval mtd flat'
+                    : mtdBetter          ? 'mval mtd up'
+                    : mtdWorse           ? 'mval mtd down'
+                    :                     'mval mtd flat';
+
+    const arrow = row.dir === 'na' || row.dir === 'flat' || row.mtd === '—' ? ''
+                : mtdBetter ? '▲ '
+                : mtdWorse  ? '▼ '
+                : '';
+
+    const r = document.createElement('div');
+    r.className = 'mrow';
+    r.innerHTML =
+      '<div class="mlabel">' +
+        '<span class="dot dot-scorecard"></span>' +
+        row.label +
+      '</div>' +
+      '<div class="mval flat">' + row.ma + '</div>' +
+      '<div class="' + (row.dir === 'na' ? 'mval na' : mtdClass) + '">' +
+        arrow + row.mtd +
+      '</div>';
+    el.appendChild(r);
+  });
+}
+
+// Returns 1 if a > b, -1 if a < b, 0 if equal (strips $, commas, %)
+function compareBetter(a, b) {
+  const clean = s => parseFloat(s.replace(/[$,%\s▲▼]/g,'').replace(/,/g,''));
+  const na = clean(a), nb = clean(b);
+  if (isNaN(na) || isNaN(nb)) return 0;
+  return na > nb ? 1 : na < nb ? -1 : 0;
+}
+
+function setView(view) {
+  const v = VIEWS[view];
+  document.getElementById('ma-label').textContent = v.maLabel;
+  document.getElementById('footnote').textContent = v.note;
+  renderSection('rows-fe',  v.fe);
+  renderSection('rows-mid', v.mid);
+  renderSection('rows-be',  v.be);
+}
+
+// Toggle click handler
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    setView(this.dataset.view);
+  });
+});
+
+// Initial render
+setView('f2f');
+</script>
+</body>
+</html>
