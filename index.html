@@ -18,7 +18,7 @@
     }
 
     .container {
-      max-width: 740px;
+      max-width: 640px;
       margin: 0 auto;
     }
 
@@ -127,7 +127,8 @@
     /* Column header row */
     .col-head {
       display: grid;
-      grid-template-columns: 1fr 108px 108px;
+      grid-template-columns: 2fr 1fr 1fr;
+      column-gap: 16px;
       padding: 14px 24px;
       background: #faf8ff;
       border-bottom: 1px solid #ede9fe;
@@ -181,7 +182,8 @@
     /* Metric row */
     .mrow {
       display: grid;
-      grid-template-columns: 1fr 108px 108px;
+      grid-template-columns: 2fr 1fr 1fr;
+      column-gap: 16px;
       padding: 11px 24px;
       border-bottom: 1px solid #f5f3ff;
       align-items: center;
@@ -200,19 +202,20 @@
     }
     .mval {
       text-align: center;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 400;
-      color: #9ca3af;
+      color: #c0c8d4;
       font-variant-numeric: tabular-nums;
     }
+    .mval.flat { color: #c0c8d4; }
     .mval.mtd {
       font-size: 15px;
       font-weight: 700;
       color: #0f0a1e;
     }
+    .mval.mtd.flat { color: #374151; }
     .mval.up   { color: #059669; }
     .mval.down { color: #dc2626; }
-    .mval.flat { color: #0f0a1e; }
     .mval.na   { color: #d1d5db; font-size: 13px; }
 
     /* Sub-divider */
