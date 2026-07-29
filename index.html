@@ -127,7 +127,7 @@
     /* Column header row */
     .col-head {
       display: grid;
-      grid-template-columns: 1fr 120px 130px;
+      grid-template-columns: 1fr 108px 108px;
       padding: 14px 24px;
       background: #faf8ff;
       border-bottom: 1px solid #ede9fe;
@@ -139,14 +139,13 @@
       text-transform: uppercase;
       color: #a78bfa;
     }
-    .col-head span:not(:first-child) { text-align: right; }
+    .col-head span:not(:first-child) { text-align: center; }
 
-    /* Section header */
+    /* Section header — base */
     .section-hd {
       padding: 10px 24px 9px;
-      background: #faf8ff;
-      border-top: 1px solid #ede9fe;
-      border-bottom: 1px solid #ede9fe;
+      border-top: 1px solid;
+      border-bottom: 1px solid;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -156,21 +155,33 @@
       font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #7c3aed;
     }
     .section-hd::before {
       content: '';
       display: block;
       width: 3px;
       height: 14px;
-      background: #7c3aed;
       border-radius: 2px;
+      flex-shrink: 0;
     }
+
+    /* Section colours */
+    .section-hd.blue   { background: #eff6ff; border-color: #dbeafe; }
+    .section-hd.blue   span { color: #1d4ed8; }
+    .section-hd.blue::before { background: #3b82f6; }
+
+    .section-hd.orange { background: #fff7ed; border-color: #fed7aa; }
+    .section-hd.orange span { color: #c2410c; }
+    .section-hd.orange::before { background: #f97316; }
+
+    .section-hd.purple { background: #faf8ff; border-color: #ede9fe; }
+    .section-hd.purple span { color: #7c3aed; }
+    .section-hd.purple::before { background: #7c3aed; }
 
     /* Metric row */
     .mrow {
       display: grid;
-      grid-template-columns: 1fr 120px 130px;
+      grid-template-columns: 1fr 108px 108px;
       padding: 11px 24px;
       border-bottom: 1px solid #f5f3ff;
       align-items: center;
@@ -188,7 +199,7 @@
       color: #374151;
     }
     .mval {
-      text-align: right;
+      text-align: center;
       font-size: 13.5px;
       font-weight: 400;
       color: #9ca3af;
@@ -249,17 +260,17 @@
   <div class="table-card">
     <div class="col-head">
       <span>Metric</span>
-      <span id="ma-label">6-Month Avg</span>
+      <span id="ma-label">6-Month Average</span>
       <span>Jul MTD</span>
     </div>
 
-    <div class="section-hd"><span>Front End</span></div>
+    <div class="section-hd blue"><span>Front End</span></div>
     <div id="rows-fe"></div>
 
-    <div class="section-hd"><span>Middle — Setter Layer</span></div>
+    <div class="section-hd orange"><span>Middle — Setter Layer</span></div>
     <div id="rows-mid"></div>
 
-    <div class="section-hd"><span>Backend — Closer Layer</span></div>
+    <div class="section-hd purple"><span>Backend — Closer Layer</span></div>
     <div id="rows-be"></div>
 
     <p class="fnote" id="footnote"></p>
@@ -279,7 +290,7 @@
 const VIEWS = {
 
   f2f: {
-    maLabel: 'Jan–Jun avg',
+    maLabel: '6-Month Average',
     note: 'F2F 6MA = simple average of Jan–Jun 2026 (6 complete months).',
     fe: [
       { label: 'Ad spend',             ma: '$36,473', mtd: '$63,427', dir: 'flat' },
@@ -311,7 +322,7 @@ const VIEWS = {
   },
 
   '6ff': {
-    maLabel: 'Jan–Jun avg*',
+    maLabel: '6-Month Average*',
     note: '* 6FF 6MA uses Jan / Feb / Mar / Jun only — Apr & May data not in scorecard.',
     fe: [
       { label: 'Ad spend',              ma: '$29,133', mtd: '$20,457', dir: 'flat' },
@@ -343,7 +354,7 @@ const VIEWS = {
   },
 
   combined: {
-    maLabel: 'Jan–Jun avg*',
+    maLabel: '6-Month Average*',
     note: '* Combined 6MA uses Jan / Feb / Mar / Jun only — 6FF data unavailable for Apr & May.',
     fe: [
       { label: 'Ad spend',              ma: '$78,779', mtd: '$83,884', dir: 'flat' },
