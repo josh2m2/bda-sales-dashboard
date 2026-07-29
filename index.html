@@ -4,184 +4,219 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BDA Sales Dashboard — July 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-      background: #f4f4f2;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f3f0ff;
       color: #111;
       min-height: 100vh;
-      padding: 36px 20px 60px;
+      padding: 48px 20px 80px;
     }
 
     .container {
-      max-width: 720px;
+      max-width: 740px;
       margin: 0 auto;
     }
 
     /* ── HEADER ── */
     .header {
-      margin-bottom: 28px;
+      text-align: center;
+      margin-bottom: 36px;
     }
-    .header .eyebrow {
+    .header .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 100px;
+      padding: 5px 14px;
       font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #9ca3af;
-      margin-bottom: 6px;
+      color: #7c3aed;
+      margin-bottom: 18px;
     }
     .header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #111;
-      line-height: 1.2;
+      font-size: 42px;
+      font-weight: 900;
+      color: #0f0a1e;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
     }
     .header .sub {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-top: 4px;
+      font-size: 15px;
+      color: #6b7280;
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.5;
     }
 
     /* ── TOGGLE ── */
+    .toggle-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
     .toggle-bar {
       display: inline-flex;
-      gap: 3px;
-      background: #e5e7eb;
-      padding: 3px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+      gap: 4px;
+      background: #e9e4f9;
+      padding: 4px;
+      border-radius: 100px;
     }
     .toggle-btn {
-      padding: 7px 18px;
+      padding: 8px 22px;
       border: none;
-      border-radius: 7px;
+      border-radius: 100px;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       background: transparent;
-      color: #6b7280;
-      transition: all 0.14s ease;
-      letter-spacing: 0.01em;
+      color: #7c3aed;
+      transition: all 0.15s ease;
+      font-family: inherit;
     }
     .toggle-btn.active {
-      background: #fff;
-      color: #111;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: #7c3aed;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(124,58,237,0.3);
     }
 
     /* ── LEGEND ── */
     .legend {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
     .legend-item {
       display: flex;
       align-items: center;
       gap: 5px;
-      font-size: 11px;
+      font-size: 11.5px;
       color: #9ca3af;
+      font-weight: 500;
     }
     .dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       display: inline-block;
       flex-shrink: 0;
     }
-    .dot-scorecard { background: #6366f1; }
+    .dot-scorecard { background: #7c3aed; }
 
-    /* ── TABLE CARD ── */
+    /* ── MAIN CARD ── */
     .table-card {
       background: #fff;
-      border-radius: 14px;
+      border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 24px rgba(124,58,237,0.08), 0 1px 4px rgba(0,0,0,0.04);
+      border: 1px solid rgba(124,58,237,0.1);
     }
 
     /* Column header row */
     .col-head {
       display: grid;
-      grid-template-columns: 1fr 110px 110px;
-      padding: 11px 18px;
-      background: #f9fafb;
-      border-bottom: 1px solid #e5e7eb;
+      grid-template-columns: 1fr 120px 130px;
+      padding: 14px 24px;
+      background: #faf8ff;
+      border-bottom: 1px solid #ede9fe;
     }
     .col-head span {
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #9ca3af;
+      color: #a78bfa;
     }
     .col-head span:not(:first-child) { text-align: right; }
 
     /* Section header */
     .section-hd {
-      padding: 8px 18px 7px;
-      background: #f9fafb;
-      border-top: 1px solid #e5e7eb;
-      border-bottom: 1px solid #e5e7eb;
+      padding: 10px 24px 9px;
+      background: #faf8ff;
+      border-top: 1px solid #ede9fe;
+      border-bottom: 1px solid #ede9fe;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .section-hd span {
       font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      font-weight: 800;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #9ca3af;
+      color: #7c3aed;
+    }
+    .section-hd::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 14px;
+      background: #7c3aed;
+      border-radius: 2px;
     }
 
     /* Metric row */
     .mrow {
       display: grid;
-      grid-template-columns: 1fr 110px 110px;
-      padding: 9px 18px;
-      border-bottom: 1px solid #f3f4f6;
+      grid-template-columns: 1fr 120px 130px;
+      padding: 11px 24px;
+      border-bottom: 1px solid #f5f3ff;
       align-items: center;
+      transition: background 0.1s;
     }
     .mrow:last-child { border-bottom: none; }
-    .mrow:hover { background: #fafafa; }
+    .mrow:hover { background: #fdf9ff; }
 
     .mlabel {
       display: flex;
       align-items: center;
-      gap: 7px;
-      font-size: 13px;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
       color: #374151;
     }
     .mval {
       text-align: right;
       font-size: 13.5px;
       font-weight: 400;
-      color: #6b7280;
+      color: #9ca3af;
       font-variant-numeric: tabular-nums;
     }
     .mval.mtd {
-      font-weight: 600;
-      color: #111;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f0a1e;
     }
     .mval.up   { color: #059669; }
     .mval.down { color: #dc2626; }
-    .mval.flat { color: #6b7280; }
-    .mval.na   { color: #d1d5db; }
+    .mval.flat { color: #0f0a1e; }
+    .mval.na   { color: #d1d5db; font-size: 13px; }
 
-    /* Sub-divider inside a section */
+    /* Sub-divider */
     .subdiv {
       height: 1px;
-      background: #e5e7eb;
-      margin: 2px 18px;
+      background: #ede9fe;
+      margin: 0 24px;
     }
 
     /* Footer note */
     .fnote {
       font-size: 11px;
-      color: #9ca3af;
-      padding: 10px 18px 12px;
-      border-top: 1px solid #f3f4f6;
+      color: #c4b5fd;
+      padding: 12px 24px 14px;
+      border-top: 1px solid #f5f3ff;
       font-style: italic;
     }
   </style>
@@ -190,15 +225,17 @@
 <div class="container">
 
   <div class="header">
-    <p class="eyebrow">Budget Dog · LTA Funnel</p>
+    <div class="chip">🐶 Budget Dog · LTA</div>
     <h1>Sales Team Dashboard</h1>
-    <p class="sub">July 2026 MTD &nbsp;·&nbsp; Source: Scorecard</p>
+    <p class="sub">Compare this month's performance against the 6-month average. Source: Scorecard.</p>
   </div>
 
-  <div class="toggle-bar">
-    <button class="toggle-btn active" data-view="f2f">F2F</button>
-    <button class="toggle-btn"        data-view="6ff">6FF</button>
-    <button class="toggle-btn"        data-view="combined">Combined</button>
+  <div class="toggle-wrap">
+    <div class="toggle-bar">
+      <button class="toggle-btn active" data-view="f2f">F2F</button>
+      <button class="toggle-btn"        data-view="6ff">6FF</button>
+      <button class="toggle-btn"        data-view="combined">Combined</button>
+    </div>
   </div>
 
   <div class="legend">
@@ -212,8 +249,8 @@
   <div class="table-card">
     <div class="col-head">
       <span>Metric</span>
-      <span id="ma-label">6MA</span>
-      <span>MTD</span>
+      <span id="ma-label">6-Month Avg</span>
+      <span>Jul MTD</span>
     </div>
 
     <div class="section-hd"><span>Front End</span></div>
